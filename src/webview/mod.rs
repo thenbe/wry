@@ -309,10 +309,10 @@ impl Default for WebViewAttributes {
 #[cfg(windows)]
 #[derive(Clone)]
 pub(crate) struct PlatformSpecificWebViewAttributes {
-  additional_browser_args: Option<String>,
-  browser_accelerator_keys: bool,
-  theme: Option<Theme>,
-  https_scheme: bool,
+  pub additional_browser_args: Option<String>,
+  pub browser_accelerator_keys: bool,
+  pub theme: Option<Theme>,
+  pub https_scheme: bool,
 }
 #[cfg(windows)]
 impl Default for PlatformSpecificWebViewAttributes {

@@ -97,6 +97,7 @@ use url::ParseError;
 
 pub mod application;
 pub use http;
+pub mod embedded_webview;
 pub mod webview;
 
 /// Convenient type alias of Result type for wry.
