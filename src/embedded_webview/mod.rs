@@ -1,5 +1,7 @@
 #[cfg(target_os = "windows")]
 pub(crate) mod webview2;
+#[cfg(target_os = "macos")]
+pub(crate) mod wkwebview;
 use std::{path::PathBuf, rc::Rc};
 
 use http::Request;
@@ -13,6 +15,8 @@ use crate::webview::{
 
 #[cfg(target_os = "windows")]
 use self::webview2::*;
+#[cfg(target_os = "macos")]
+use self::wkwebview::*;
 
 pub struct EmbeddedWebViewAttributes {
   pub width: Option<u32>,
