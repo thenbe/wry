@@ -363,12 +363,66 @@ impl InnerWebView {
       context.set_use_system_appearance_for_scrollbars(false);
     }
 
+    // // prompt for permission from user
+    // webview.connect_permission_request(move |_, request| {
+    //   let dialog = MessageDialog::new(
+    //     None::<&gtk::Window>,
+    //     DialogFlags::MODAL,
+    //     gtk::MessageType::Question,
+    //     gtk::ButtonsType::YesNo,
+    //     "Allow permissions request?",
+    //   );
+    //
+    //   dialog.show();
+    //
+    //   let res = dialog.run();
+    //
+    //   match res {
+    //     ResponseType::Yes => {
+    //       request.allow();
+    //     }
+    //     _ => {
+    //       request.deny();
+    //     }
+    //   }
+    //
+    //   // this might happen automatically on drop but might as well do it here
+    //   // it's unsafe because we still have the dialog object so don't use it
+    //   // after this line
+    //   unsafe {
+    //     dialog.destroy();
+    //   }
+    //
+    //   true
+    // });
+
+    use webkit2gtk::PermissionRequestExt;
+    // allow all permission requests for debugging
+    webview.connect_permission_request(move |_, request| {
+      request.allow();
+      true
+    });
+
     // Enable webgl, webaudio, canvas features as default.
     if let Some(settings) = WebViewExt::settings(&webview) {
       settings.set_enable_webgl(true);
       settings.set_enable_webaudio(true);
       settings
         .set_enable_back_forward_navigation_gestures(attributes.back_forward_navigation_gestures);
+
+      // Enable WebRTC (requires custom build of webkitgtk)
+      println!("HELLO THERE: We are enabling WebRTC for debugging!");
+      settings.set_enable_webrtc(true);
+      settings.set_enable_media_stream(true);
+      settings.set_enable_mediasource(true);
+      settings.set_enable_media(true);
+      settings.set_enable_media_capabilities(true);
+      settings.set_enable_encrypted_media(true);
+      //   settings.set_enable_mock_capture_devices(true);
+      settings.set_media_playback_requires_user_gesture(false);
+      settings.set_media_playback_allows_inline(true);
+      settings.set_media_content_types_requiring_hardware_support(None);
+      //   settings.set_disable_web_security(true);
 
       // Enable clipboard
       if attributes.clipboard {
